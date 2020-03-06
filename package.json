@@ -1,0 +1,19 @@
+{
+  "name": "wccsp",
+  "version": "0.0.1",
+  "description": "Website for wccsp (wellesley coronavirus support program)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jddamore@github.com/jddamore/wccsp.git"
+  },
+  "author": "John D'Amore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jddamore/wccsp/issues"
+  },
+  "homepage": "https://github.com/jddamore/wccsp#readme"
+}
