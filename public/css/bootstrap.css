@@ -1103,11 +1103,13 @@ input[type="color"],
           border-radius: 4px;
 }
 
+/* JD editing out
 input,
 textarea,
 .uneditable-input {
   width: 206px;
 }
+*/
 
 textarea {
   height: auto;
