@@ -12,6 +12,7 @@
 /build
 /certs
 /logs
+log.log
 
 # misc
 .DS_Store

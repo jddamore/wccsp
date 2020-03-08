@@ -1,89 +1,95 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Sign in � Twitter Bootstrap</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
+<head>
+  <meta charset="utf-8">
+  <title>Sign in � Twitter Bootstrap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-      .form-signin {
-        max-width: 100vp;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        width: 300px; 
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
+  <!-- Le styles -->
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <style type="text/css">
+    body {
+      padding-top: 40px;
+      padding-bottom: 40px;
+      background-color: #f5f5f5;
+    }
 
-    </style>
-    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    .form-signin {
+      max-width: 100vp;
+      padding: 19px 29px 29px;
+      margin: 0 auto 20px;
+      background-color: #fff;
+      border: 1px solid #e5e5e5;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+      -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    }
 
-  </head>
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+      margin-bottom: 10px;
+    }
 
-  <body>
+    .form-signin input[type="text"],
+    .form-signin input[type="password"] {
+      font-size: 16px;
+      width: 300px;
+      height: auto;
+      margin-bottom: 15px;
+      padding: 7px 9px;
+    }
+  </style>
+  <link href="/css/bootstrap-responsive.css" rel="stylesheet">
 
-    <div class="container">
+</head>
 
-      <form id="myForm" class="form-signin">
-        <h2 class="form-signin-heading">Sign in and enter content</h2>
-        <input name="email" type="text" class="input-block-level" placeholder="Email address">
-        <br />
-        <input name="password" type="password" class="input-block-level" placeholder="Password">
-        <br />
-        <textarea id="header" name="header" type="text" rows="4" cols="50" placeholder="Header (limit to a few words)"></textarea>
-        <br />
-        <textarea id="lead" name="lead" type="text" rows="4" cols="150" placeholder="Lead Paragraph (limit to 50 words)"></textarea>
-        <br />
-        <textarea id="body" name="body" type="text" rows="40" cols="150" placeholder="Other Paragraphs (don't repeat lead. Can be as long as needed)"></textarea>
-        <br />
-        <button id="submitButton" class="btn btn-large btn-primary" type="button">Submit</button>
-      </form>
+<body>
 
-    </div> <!-- /container -->
+  <div class="container">
 
-    <!-- Le javascript
+    <form id="myForm" class="form-signin">
+      <h2 class="form-signin-heading">Sign in and enter content</h2>
+      <input name="email" type="text" class="input-block-level" placeholder="Email address">
+      <br />
+      <input name="password" type="password" class="input-block-level" placeholder="Password">
+      <br />
+      <textarea id="header" name="header" type="text" rows="4" cols="50"
+        placeholder="Header (limit to a few words)"></textarea>
+      <br />
+      <textarea id="lead" name="lead" type="text" rows="4" cols="150"
+        placeholder="Lead Paragraph (limit to 50 words, appears on main page for newer announcements)"></textarea>
+      <br />
+      <textarea id="body" name="body" type="text" rows="40" cols="150"
+        placeholder="Other Paragraphs (don't repeat lead. Can be as long as needed)"></textarea>
+      <br />
+      <button id="submitButton" class="btn btn-large btn-primary" type="button">Submit</button>
+    </form>
+
+  </div> <!-- /container -->
+
+  <!-- Le javascript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="../js/jquery.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
   <script>
-    $('#submitButton').click( function() {
-        alert('submit');
-        console.log($('#myForm').serializeArray());
-        $.post( '/siteadmin/new', $('#myForm').serialize(), function(data) {
-          alert(data)
-          },
-          'json' // I expect a JSON response
-        );
+    $('#submitButton').click(function() {
+      console.log($('#myForm').serializeArray());
+      $.post(`${location.href}`,$('#myForm').serialize(),function(data) {
+        alert(data.message);
+        if(data.redirect) {
+          window.location.href=data.redirect;
+        }
+      },
+        'json' // I expect a JSON response
+      );
     });
-
   </script>
-
 </body>
+
 </html>

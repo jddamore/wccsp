@@ -4,7 +4,9 @@
   "description": "Website for wccsp (wellesley coronavirus support program)",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "set WCCSP_HTTPS=0 && set WCCSP_PORT=80 && set WCCSP_DEBUG=1 && nodemon app.js",
+    "prod": "set WCCSP_HTTPS=1 && set WCCSP_PORT=443 && set WCCSP_DEBUG=0 &&  nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +19,24 @@
   },
   "homepage": "https://github.com/jddamore/wccsp#readme",
   "dependencies": {
+    "chalk": "^3.0.0",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
+    "moment": "^2.24.0",
     "mongodb": "^3.5.4",
-    "nodemon": "^2.0.2"
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
+    "winston": "2.4.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "8.0.1",
+    "eslint": "^6.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }
