@@ -109,11 +109,11 @@ app.get('/announcements', (req, res) => {
   wccsp.collection('announcements').find({}, { '_id': 1, header: 1, createDate: 1 }).sort({ '_id': -1 }).toArray(function (err, result) {
     html += '<body>' + navbar;
     html = html.replace('id="navannouncments"', 'id="navannouncments" class="active"' );
-    html += '<h2>All announcements</h2><ul>';
+    html += '<div class="container"><h2>All announcements</h2><ul>';
     for (let i = 0; i < result.length; i++) { 
       html += `<li>${moment(result[i].createDate).format('dddd, MMMM Do YYYY, h:mm a')}: <a href="/announcement/${result[i]._id}">${result[i].header}</a></li>`;
     }
-    html += '</ul></body></html>';
+    html += '</ul></div></body></html>';
     res.send(html);
   });
 });
@@ -142,14 +142,14 @@ app.get('/announcement/*', (req, res) => {
         stuff += '<div class="row">';
         stuff += '<div class="span12">';
         stuff += `<h2>${result.header}</h2>`; 
+        stuff += `<p class="lead">${result.lead}</p>`; 
+        stuff += `<p class="lead">${result.body}</p>`;
         stuff += `<p>Created on: ${moment(result.createDate).format('dddd, MMMM Do YYYY, h:mm a')}</p>`; 
-        stuff += `<p>${result.lead}</p>`; 
-        stuff += `<p>${result.body}</p>`;
         stuff += `<p>Last edited on: ${moment(result.editDate).format('dddd, MMMM Do YYYY, h:mm a')}</p>`; 
         stuff += `<p>Last edited by: ${result.username}</p>`; 
-        stuff += '</div></div></div>';
-        html += stuff + '</body>';
-        html += htmlFoot.replace('/siteadmin/new', `/siteadmin/edit/${id}`);
+        stuff += '</div></div></div><hr/>';
+        html += stuff;
+        html += htmlFoot.replace('/siteadmin/new', `/siteadmin/edit/${id}`) + '</body>';
         res.send(html);
       } 
     });
