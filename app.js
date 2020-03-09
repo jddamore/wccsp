@@ -260,7 +260,7 @@ app.post('/siteadmin/edit/*', urlencodedParser, function (req, res) {
             result.header = req.body.header;
             result.lead = req.body.lead;
             result.body = req.body.body;
-            result.username = req.body.username;
+            result.username = req.body.email;
             wccsp.collection('announcements').update({ '_id': ObjectID(id) }, result, function (err) {
               if (err) res.send({ message: 'Entry error in query' });
               else res.send({ 
