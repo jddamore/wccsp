@@ -71,7 +71,7 @@ app.get(['/', '/home'], (req, res) => {
   wccsp.collection('announcements').find().sort({ '_id': -1 }).limit(9).toArray(function (err, result){
     if (err || !result.length) {
       console.log(err);
-      let html = htmlBase.replace('<!-- CONTENT -->', stuff);
+      let html = htmlHead + htmlBase.replace('<!-- CONTENT -->', stuff);
       html = html.replace('<!-- NAVBAR -->', navbar);
       html = html.replace('id="navhome"', 'id="navhome" class="active"' );
       html += htmlFoot + '</html>';
