@@ -193,86 +193,92 @@ app.get('/siteadmin/edit/*', (req, res) => {
 });
 
 // add announcement
-app.post('/siteadmin/new', urlencodedParser, (req, res) => { 
-  if (checkUser(req.body, wccsp)) {
-    if (validateForm(req.body)) {
-      let posting = {};
-      posting._id = new ObjectID();
-      posting.createDate = new Date();
-      posting.editDate = new Date();
-      posting.header = req.body.header;
-      posting.lead = req.body.lead;
-      posting.body = req.body.body;
-      posting.username = req.body.email;
+app.post('/siteadmin/new', urlencodedParser, function (req, res) { 
+  let cb = function (userCheck) {
+    if (userCheck) {
+      if (validateForm(req.body)) {
+        let posting = {};
+        posting._id = new ObjectID();
+        posting.createDate = new Date();
+        posting.editDate = new Date();
+        posting.header = req.body.header;
+        posting.lead = req.body.lead;
+        posting.body = req.body.body;
+        posting.username = req.body.email;
 
-      wccsp.collection('announcements').insert(posting, function (err) {
-        if (err) {
-          logger.warn(err);
-          res.send( { message: 'Database issue. Contact web administrator.' });
-        }
-        else {
-          res.send({
-            message: 'New entry added',
-            redirect: `/announcement/${posting._id}` });
-        }
-      });
+        wccsp.collection('announcements').insert(posting, function (err) {
+          if (err) {
+            logger.warn(err);
+            res.send( { message: 'Database issue. Contact web administrator.' });
+          }
+          else {
+            res.send({
+              message: 'New entry added',
+              redirect: `/announcement/${posting._id}` });
+          }
+        });
+      }
+      else {
+        res.send({ message: 'Form parameters incorrect' });
+      }
     }
     else {
-      res.send({ message: 'Form parameters incorrect' });
+      res.send({ message: 'user/password incorrect. Not saved.' });
     }
-  }
-  else {
-    res.send({ message: 'user/password incorrect. Not saved.' });
-  }
+  };
+  checkUser(req.body, wccsp, cb);
 });
 
 // edit or delete announcement
-app.post('/siteadmin/edit/*', urlencodedParser, (req, res) => { 
+app.post('/siteadmin/edit/*', urlencodedParser, function (req, res) { 
   let id = req.url.split('/')[3];
   if (id.length !== 24) {
     res.send({ message: 'Entry error in query' });
   } 
   else {
-    if (checkUser(req.body)) {
-      console.log(req.body);
-      wccsp.collection('announcements').findOne({ '_id': ObjectID(id) }, function (err, result) { 
-        if (err || !result) {
-          console.log(err);
-          res.send({ message: 'Entry error in query' });
-        }
-        else if (!req.body.header && !req.body.lead && !req.body.body) {
-          wccsp.collection('announcements').remove({ '_id': ObjectID(id) }, function (err) {
-            if (err) res.send({ message: 'Entry error in query' });
-            else {
-              res.send({ 
-                message: 'Entry deleted', 
-                redirect: '/' 
+    let cb = function (userCheck) {
+      if (userCheck) {
+        console.log(req.body);
+        wccsp.collection('announcements').findOne({ '_id': ObjectID(id) }, function (err, result) { 
+          if (err || !result) {
+            console.log(err);
+            res.send({ message: 'Entry error in query' });
+          }
+          else if (!req.body.header && !req.body.lead && !req.body.body) {
+            wccsp.collection('announcements').remove({ '_id': ObjectID(id) }, function (err) {
+              if (err) res.send({ message: 'Entry error in query' });
+              else {
+                res.send({ 
+                  message: 'Entry deleted', 
+                  redirect: '/' 
+                });
+              }
+            }); 
+          }
+          else if (validateForm(req.body)) {
+            result.editDate = new Date();
+            result.header = req.body.header;
+            result.lead = req.body.lead;
+            result.body = req.body.body;
+            result.username = req.body.username;
+            wccsp.collection('announcements').update({ '_id': ObjectID(id) }, result, function (err) {
+              if (err) res.send({ message: 'Entry error in query' });
+              else res.send({ 
+                message: 'Entry edited', 
+                redirect: `/announcement/${id}`
               });
-            }
-          }); 
-        }
-        else if (validateForm(req.body)) {
-          result.editDate = new Date();
-          result.header = req.body.header;
-          result.lead = req.body.lead;
-          result.body = req.body.body;
-          result.username = req.body.username;
-          wccsp.collection('announcements').update({ '_id': ObjectID(id) }, result, function (err) {
-            if (err) res.send({ message: 'Entry error in query' });
-            else res.send({ 
-              message: 'Entry edited', 
-              redirect: `/announcement/${id}`
-            });
-          }); 
-        }
-        else {
-          res.send({ message: 'Form parameters incorrect' });
-        }
-      });  
-    }
-    else {
-      res.send({ message: 'user/password incorrect. Not saved.' });
-    }
+            }); 
+          }
+          else {
+            res.send({ message: 'Form parameters incorrect' });
+          }
+        }); 
+      }
+      else {
+        res.send({ message: 'user/password incorrect. Not saved.' });
+      }
+    };
+    checkUser(req.body, wccsp, cb);
   }
 });
 
