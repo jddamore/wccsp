@@ -1,7 +1,7 @@
 const fs = require('fs');
 const config = require('./config.js');
 
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 // Webpage utilities
 const express = require('express');
@@ -144,8 +144,8 @@ app.get('/announcement/*', (req, res) => {
         stuff += `<h2>${result.header}</h2>`; 
         stuff += `<p class="lead">${result.lead}</p>`; 
         stuff += `<p class="lead">${result.body}</p>`;
-        stuff += `<p>Created on: ${moment(result.createDate).format('dddd, MMMM Do YYYY, h:mm a')}</p>`; 
-        stuff += `<p>Last edited on: ${moment(result.editDate).format('dddd, MMMM Do YYYY, h:mm a')}</p>`; 
+        stuff += `<p>Created on: ${moment(result.createDate).tz('America/New_York').format('dddd, MMMM Do YYYY, h:mm a')}</p>`; 
+        stuff += `<p>Last edited on: ${moment(result.editDate).tz('America/New_York').format('dddd, MMMM Do YYYY, h:mm a')}</p>`; 
         stuff += `<p>Last edited by: ${result.username}</p>`; 
         stuff += '</div></div></div><hr/>';
         html += stuff;
