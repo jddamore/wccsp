@@ -111,7 +111,7 @@ app.get('/announcements', (req, res) => {
     html = html.replace('id="navannouncments"', 'id="navannouncments" class="active"' );
     html += '<div class="container"><h2>All announcements</h2><ul>';
     for (let i = 0; i < result.length; i++) { 
-      html += `<li>${moment(result[i].createDate).format('dddd, MMMM Do YYYY, h:mm a')}: <a href="/announcement/${result[i]._id}">${result[i].header}</a></li>`;
+      html += `<li>${moment(result[i].createDate).tz('America/New_York').format('dddd, MMMM Do YYYY, h:mm a')}: <a href="/announcement/${result[i]._id}">${result[i].header}</a></li>`;
     }
     html += '</ul></div></body></html>';
     res.send(html);
